@@ -1,6 +1,7 @@
 EXE = App
 RENDER = ./Render
-IMGUI_DIR = ./includes/imgui
+IMGUI_DIR = ./includes
+RENDER_DIR = ./
 STBI = ./includes/stbi
 SOURCES = App.cpp
 SOURCES += $(IMGUI_DIR)/imgui.cpp $(IMGUI_DIR)/imgui_demo.cpp $(IMGUI_DIR)/imgui_draw.cpp $(IMGUI_DIR)/imgui_tables.cpp $(IMGUI_DIR)/imgui_widgets.cpp
@@ -11,7 +12,7 @@ OBJS = $(addsuffix .o, $(basename $(notdir $(SOURCES))))
 UNAME_S := $(shell uname -s)
 LINUX_GL_LIBS = -lGL -lGLEW
 
-CXXFLAGS = -std=c++11 -I$(IMGUI_DIR)
+CXXFLAGS = -std=c++11 -I$(IMGUI_DIR) -I$(RENDER_DIR)
 CXXFLAGS += -g -Wall -Wformat -pthread
 LIBS =
 

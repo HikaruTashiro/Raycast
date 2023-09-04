@@ -1,32 +1,32 @@
-#include "Shader.h"
+#include "Shader.hpp"
 
-Shader :: Shader(const char* vertShader, const char* fragShader)
+Shader ::Shader(const char *vertShader, const char *fragShader)
 {
-    shader = createShaderProgram(vertShader,fragShader); 
+    shader = createShaderProgram(vertShader, fragShader);
 }
 
-void Shader :: activateShader(void)
+void Shader ::activateShader(void)
 {
     glUseProgram(shader);
 }
 
-void Shader :: deleteShader(void)
+void Shader ::deleteShader(void)
 {
     glDeleteProgram(shader);
 }
 
-void Shader :: createProgram(const char* vertShader, const char* fragShader)
+void Shader ::createProgram(const char *vertShader, const char *fragShader)
 {
     shader = createShaderProgram(vertShader, fragShader);
 }
 
 /*
-*	- Input: The name of a GLSL file containing a code.
-*	- Output: A string containing the GLSL code.
-*   - Description: reads the contents of a GLSL file and
-*				creates a string containing the code.
-*/
-std::string Shader :: readShaderSource(const char *filePath)
+ *	- Input: The name of a GLSL file containing a code.
+ *	- Output: A string containing the GLSL code.
+ *   - Description: reads the contents of a GLSL file and
+ *				creates a string containing the code.
+ */
+std::string Shader ::readShaderSource(const char *filePath)
 {
     std::string content;
     std::ifstream fileStream(filePath, std::ios::in);
@@ -44,13 +44,13 @@ std::string Shader :: readShaderSource(const char *filePath)
 }
 
 /*
-*	- Input: two strings that refer to GLSL files. 
-*	- Output: returns the address of compiled shader program.
-*   - Description: reads GLSL Code for Vertex and Fragment Shaders,
-*			 	then compiles both and procedes to link then into a
-*               program that will be used in the Graphics Pipeline.
-*/
-GLuint Shader :: createShaderProgram(const char* vertShader, const char* fragShader)
+ *	- Input: two strings that refer to GLSL files.
+ *	- Output: returns the address of compiled shader program.
+ *   - Description: reads GLSL Code for Vertex and Fragment Shaders,
+ *			 	then compiles both and procedes to link then into a
+ *               program that will be used in the Graphics Pipeline.
+ */
+GLuint Shader ::createShaderProgram(const char *vertShader, const char *fragShader)
 {
     GLint vertCompiled;
     GLint fragCompiled;
@@ -95,7 +95,7 @@ GLuint Shader :: createShaderProgram(const char* vertShader, const char* fragSha
     checkOpenGLError();
 
     glGetProgramiv(vfProgram, GL_LINK_STATUS, &linked);
-    if (linked != 1) 
+    if (linked != 1)
     {
         std::cout << "linking failed";
         printProgramLog(vfProgram);
@@ -104,45 +104,45 @@ GLuint Shader :: createShaderProgram(const char* vertShader, const char* fragSha
     return vfProgram;
 }
 
-void Shader :: printShaderLog(GLuint shader)
+void Shader ::printShaderLog(GLuint shader)
 {
-	int len = 0;
-	int chWrittn = 0;
-	char *log;
-	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
-	if (len > 0) 
-	{
-		log = (char *)malloc(len);
-		glGetShaderInfoLog(shader, len, &chWrittn, log);
-		std::cout << "Shader Info Log: " << log;
-		free(log);
-	} 
+    int len = 0;
+    int chWrittn = 0;
+    char *log;
+    glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
+    if (len > 0)
+    {
+        log = (char *)malloc(len);
+        glGetShaderInfoLog(shader, len, &chWrittn, log);
+        std::cout << "Shader Info Log: " << log;
+        free(log);
+    }
 }
 
-void Shader :: printProgramLog(int prog)
+void Shader ::printProgramLog(int prog)
 {
-	int len = 0;
-	int chWrittn = 0;
-	char *log;
-	glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &len);
-	if (len > 0)
-	{
-		log = (char *)malloc(len);
-		glGetProgramInfoLog(prog, len, &chWrittn, log);
-		std::cout << "Program Info Log: " << log;
-		free(log);
-	} 
+    int len = 0;
+    int chWrittn = 0;
+    char *log;
+    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &len);
+    if (len > 0)
+    {
+        log = (char *)malloc(len);
+        glGetProgramInfoLog(prog, len, &chWrittn, log);
+        std::cout << "Program Info Log: " << log;
+        free(log);
+    }
 }
 
-bool Shader :: checkOpenGLError()
+bool Shader ::checkOpenGLError()
 {
-	bool foundError = false;
-	int glErr = glGetError();
-	while (glErr != GL_NO_ERROR)
-	{
-		std::cout << "glError: " << glErr;
-		foundError = true;
-		glErr = glGetError();
-	}
-	return foundError;
+    bool foundError = false;
+    int glErr = glGetError();
+    while (glErr != GL_NO_ERROR)
+    {
+        std::cout << "glError: " << glErr;
+        foundError = true;
+        glErr = glGetError();
+    }
+    return foundError;
 }
