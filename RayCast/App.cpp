@@ -1,21 +1,21 @@
 /* @file App.cpp
  * @author Jonas Edward Tashiro
- * * @brief
+ * @brief
  * @version 1.0
  * @date 2023-01-22
  *
- * @copyright Copyright (c) 2022
  */
 
 #include "Global.hpp"
 #include "World.cpp"
+#include <EBO.hpp>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <Render/EBO.hpp>
-#include <Render/Raycast.hpp>
-#include <Render/Shader.hpp>
-#include <Render/VAO.hpp>
-#include <Render/VBO.hpp>
+#include <ImGuiContext.h>
+#include <Raycast.hpp>
+#include <Shader.hpp>
+#include <VAO.hpp>
+#include <VBO.hpp>
 #include <chrono>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_glfw.h>
@@ -24,17 +24,12 @@
 #include <math.h>
 
 #define glsl_version "#version 420"
-void Initialize_GLFW();
-void Initialize_GLEW();
-void Initialize_ImGui();
-void Cleanup_OpenGL();
-void Cleanup_ImGui();
 void display();
 
 int main(void)
 {
-    Initialize_GLFW();
-    Initialize_ImGui();
+    ImGui::Initialize_GLFW();
+    ImGui::Initialize_ImGui();
 
     GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raycast", NULL, NULL);
     if (window == NULL)
@@ -47,7 +42,7 @@ int main(void)
     glfwSwapInterval(1);
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
-    Initialize_GLEW();
+    ImGui::Initialize_GLEW();
 
     Shader shader("./GLSL/vertShader.glsl", "./GLSL/fragShader.glsl");
     shader.activateShader();
@@ -93,8 +88,8 @@ int main(void)
     vao.Delete();
     vbo.Delete();
     shader.deleteShader();
-    Cleanup_ImGui();
-    Cleanup_OpenGL();
+    ImGui::Cleanup_ImGui();
+    ImGui::Cleanup_OpenGL();
 
     return 0;
 }
@@ -126,50 +121,4 @@ void display()
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-}
-
-void Initialize_GLFW()
-{
-    if (!glfwInit())
-    {
-        std::cout << "Failed to Initialize GLFW\n";
-        exit(EXIT_FAILURE);
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
-}
-
-void Initialize_GLEW()
-{
-    /*Initialize GLEW Library*/
-    if (glewInit() != GLEW_OK)
-    {
-        glfwTerminate();
-        exit(EXIT_FAILURE);
-    }
-}
-
-void Initialize_ImGui()
-{
-    /*ImGUI Initialization*/
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    (void)io;
-    ImGui::StyleColorsDark();
-}
-
-void Cleanup_OpenGL()
-{
-    glfwTerminate();
-}
-
-void Cleanup_ImGui()
-{
-    // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
 }
