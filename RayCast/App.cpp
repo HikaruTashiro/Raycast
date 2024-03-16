@@ -21,9 +21,9 @@
 #include <imgui/imgui_impl_glfw.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include <iostream>
-#include <math.h>
 
 #define glsl_version "#version 420"
+
 void display();
 
 int main(void)
@@ -31,9 +31,8 @@ int main(void)
     ImGui::Initialize_GLFW();
     ImGui::Initialize_ImGui();
 
-    GLFWwindow *window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raycast", NULL, NULL);
-    if (window == NULL)
-    {
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raycast", NULL, NULL);
+    if (window == NULL) {
         std::cout << "Failed to Initialize Window\n";
         glfwTerminate();
     }
@@ -65,8 +64,7 @@ int main(void)
     float time_dif;
     std::chrono::duration<float> elapsedTime;
 
-    while (!glfwWindowShouldClose(window))
-    {
+    while (!glfwWindowShouldClose(window)) {
         time_f = std::chrono::system_clock::now();
         elapsedTime = time_f - time_i;
         time_i = time_f;
